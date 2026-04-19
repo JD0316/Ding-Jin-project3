@@ -1,0 +1,79 @@
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+    grid-template-rows: repeat(var(--grid-size), 1fr);
+    width: 90vw;
+    height: 90vw;
+    max-width: 540px;
+    max-height: 540px;
+    margin: 2rem auto;
+    border: 3px solid #333;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.sudoku-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    color: #3498db; /* User-input numbers */
+}
+
+.sudoku-cell:hover {
+    background-color: #f0f8ff;
+}
+
+.sudoku-cell--locked {
+    font-weight: bold;
+    color: #333; /* Pre-filled numbers */
+    background-color: #f1f3f5;
+    cursor: not-allowed;
+}
+
+.sudoku-cell--selected {
+    background-color: #aed6f1;
+    outline: 2px solid #3498db;
+    outline-offset: -2px;
+}
+
+.sudoku-cell--error {
+    color: #e74c3c;
+    background-color: #fbeae5;
+    border-color: #e74c3c;
+}
+
+/* --- Corrected Border Logic --- */
+
+/* 9x9 Grid (3x3 subgrids) */
+.sudoku-grid[style*="--grid-size: 9"] .sudoku-cell:nth-child(3n) { border-right-width: 2px; border-right-color: #333; }
+.sudoku-grid[style*="--grid-size: 9"] .sudoku-cell:nth-child(9n) { border-right-width: 1px; border-right-color: #ccc; }
+.sudoku-grid[style*="--grid-size: 9"] .sudoku-cell:nth-child(n+19):nth-child(-n+27),
+.sudoku-grid[style*="--grid-size: 9"] .sudoku-cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom-width: 2px;
+    border-bottom-color: #333;
+}
+
+/* 6x6 Grid (2 rows x 3 cols subgrids) */
+.sudoku-grid[style*="--grid-size: 6"] .sudoku-cell:nth-child(3n) { border-right-width: 2px; border-right-color: #333; }
+.sudoku-grid[style*="--grid-size: 6"] .sudoku-cell:nth-child(6n) { border-right-width: 1px; border-right-color: #ccc; }
+.sudoku-grid[style*="--grid-size: 6"] .sudoku-cell:nth-child(n+7):nth-child(-n+12),
+.sudoku-grid[style*="--grid-size: 6"] .sudoku-cell:nth-child(n+19):nth-child(-n+24) {
+    border-bottom-width: 2px;
+    border-bottom-color: #333;
+}
+
+
+@media (min-width: 600px) {
+    .sudoku-grid {
+        width: 540px;
+        height: 540px;
+    }
+    .sudoku-cell {
+        font-size: 2rem;
+    }
+}

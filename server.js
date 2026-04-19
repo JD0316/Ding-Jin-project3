@@ -1,30 +1,49 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import cookieParser from 'cookie-parser';
-import path, {dirname} from 'path';
+import session from "express-session";
+import cors from "cors";
+import path from 'path';
 
+import userRoutes from './server/routes/userRoutes.js';
+import sudokuRoutes from './server/routes/sudokuRoutes.js';
+import highscoreRoutes from './server/routes/highscoreRoutes.js'; // Import new routes
 
 const app = express();
 
+// --- Middleware ---
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5173' 
+}));
 app.use(express.json());
-app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 
+app.use(
+  session({
+    secret: "cs5610-project3-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  })
+);
 
-const MONGODB_URL = // INSERT MONGO DB URL HERE
-mongoose.connect(MONGODB_URL);
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
+// --- MongoDB Connection ---
+const MONGO_URI = "mongodb://127.0.0.1:27017/sudoku-app-p3";
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("MongoDB connected successfully."))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
+// --- API Routes ---
+app.use('/api/user', userRoutes);
+app.use('/api/sudoku', sudokuRoutes);
+app.use('/api/highscore', highscoreRoutes); // Mount highscore routes
 
-const frontend_dir = path.join(path.resolve(), 'dist')
-
-app.use(express.static(frontend_dir));
-app.get('*', function (req, res) {
-    res.sendFile(path.join(frontend_dir, "index.html"));
+// --- Server Startup ---
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}...`);
 });
-
-
-app.listen(8000, function() {
-    console.log("Starting server now...")
-})

@@ -1,36 +1,41 @@
 import React, { useState, useContext } from 'react'; // Import useContext
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.jsx'; // Import the context itself
-import './Login.css'; 
+import './Login.css';
 
-function LoginPage() {
+function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [verifyPassword, setVerifyPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useContext(AuthContext); // Use the context directly
+  const { register } = useContext(AuthContext); // Use the context directly
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!username || !password) {
-      setError('Username and password are required.');
+    if (!username || !password || !verifyPassword) {
+      setError('All fields are required.');
+      return;
+    }
+    if (password !== verifyPassword) {
+      setError('Passwords do not match.');
       return;
     }
 
     try {
-      await login(username, password);
+      await register(username, password);
       navigate('/games');
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during login.');
+      setError(err.response?.data?.message || 'An error occurred during registration.');
     }
   };
 
   return (
     <div className="form-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h1>Login</h1>
+        <h1>Register</h1>
         {error && <p className="error-message">{error}</p>}
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -52,15 +57,25 @@ function LoginPage() {
             required
           />
         </div>
-        <button type="submit" disabled={!username || !password}>
-          Login
+        <div className="form-group">
+          <label htmlFor="verify-password">Verify Password</label>
+          <input
+            type="password"
+            id="verify-password"
+            value={verifyPassword}
+            onChange={(e) => setVerifyPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" disabled={!username || !password || !verifyPassword}>
+          Register
         </button>
         <p className="form-footer">
-          Don't have an account? <Link to="/register">Register here</Link>.
+          Already have an account? <Link to="/login">Login here</Link>.
         </p>
       </form>
     </div>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

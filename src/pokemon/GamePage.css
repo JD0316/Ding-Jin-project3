@@ -1,0 +1,102 @@
+.game-container {
+    padding: 1rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto 1rem;
+    padding: 0 1rem;
+}
+
+.game-status {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.logged-out-warning {
+    background-color: #fcf3cf;
+    color: #e67e22;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #f8c471;
+}
+
+.game-controls {
+    margin-top: 2rem;
+}
+
+.game-controls button {
+    padding: 0.8rem 1.5rem;
+    margin: 0 0.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #e74c3c; /* Red for reset */
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.game-controls button:hover {
+    background-color: #c0392b;
+}
+
+/* Modal specific styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.modal-content p {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.modal-content button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-content button:hover {
+  background-color: #2980b9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
